@@ -22,6 +22,7 @@ protocol MainViewInput: AnyObject {
 
 protocol MainInteractorInput: AnyObject {
     func loadData(searchText: String)
+    func loadImage(imageUrl: String)
 }
 
 protocol MainInteractorOutput: AnyObject {

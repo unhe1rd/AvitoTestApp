@@ -15,6 +15,9 @@ final class MainPresenter {
     private let interactor: MainInteractorInput
     private var searchDebounser: Debouncer?
     
+    var viewModels: [MainViewModel] = []
+    var detailModels: [DetailViewModel] = []
+    
     init(router: MainRouterInput, interactor: MainInteractorInput) {
         self.router = router
         self.interactor = interactor
@@ -68,8 +71,6 @@ private extension MainPresenter {
     }
     
     func didLoadData(with response: iTunesResponse) {
-        var viewModels: [MainViewModel] = []
-        var detailModels: [DetailViewModel] = []
         let dispatchGroup = DispatchGroup()
         
         for item in response.results {
@@ -89,7 +90,7 @@ private extension MainPresenter {
                     contentType: item.wrapperType,
                     contentImage: image
                 )
-                viewModels.append(viewModel)
+                self.viewModels.append(viewModel)
                 
                 guard let trackViewUrl = item.trackViewUrl else { return }
                 let detailModel = DetailViewModel(
@@ -101,11 +102,11 @@ private extension MainPresenter {
                     artictLinkUrl: NetworkConstants.baseLookupURl + String(item.artistId),
                     contentImage: image
                 )
-                detailModels.append(detailModel)
+                self.detailModels.append(detailModel)
             }
             
             dispatchGroup.notify(queue: .main) {
-                self.view?.configure(with: viewModels, with: detailModels)
+                self.view?.configure(with: self.viewModels, with: self.detailModels)
             }
         }
     }
