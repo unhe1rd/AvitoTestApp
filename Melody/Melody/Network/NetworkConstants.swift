@@ -10,4 +10,5 @@ import Foundation
 //https://itunes.apple.com/search?term=jack+johnson
 enum NetworkConstants{
     static let baseURl = "https://itunes.apple.com/search?"
+    static let baseLookupURl = "https://itunes.apple.com/lookup?id="
 }

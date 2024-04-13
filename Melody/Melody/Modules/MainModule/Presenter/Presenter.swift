@@ -22,6 +22,10 @@ final class MainPresenter {
 }
 
 extension MainPresenter: MainViewOutput {
+    func didTapOnCell(model: DetailViewModel) {
+        router.openDetailModule(with: model)
+    }
+    
     func didLoadView() {
         UserDefaults.standard.set(30, forKey: "limit")
     }
@@ -65,13 +69,13 @@ private extension MainPresenter {
     
     func didLoadData(with response: iTunesResponse) {
         var viewModels: [MainViewModel] = []
-        
+        var detailModels: [DetailViewModel] = []
         let dispatchGroup = DispatchGroup()
         
-        for cellModel in response.results {
+        for item in response.results {
             dispatchGroup.enter()
             
-            SearchNetworkManager.shared.downloadImage(from: cellModel.artworkUrl100) { result in
+            SearchNetworkManager.shared.downloadImage(from: item.artworkUrl100) { result in
                 defer {
                     dispatchGroup.leave()
                 }
@@ -81,15 +85,27 @@ private extension MainPresenter {
                 }
                 
                 let viewModel = MainViewModel(
-                    title: cellModel.trackName ?? cellModel.collectionName ?? "Name N/F",
-                    contentType: cellModel.wrapperType,
+                    title: item.trackName ?? item.collectionName ?? "Name N/F",
+                    contentType: item.wrapperType,
                     contentImage: image
                 )
                 viewModels.append(viewModel)
+                
+                guard let trackViewUrl = item.trackViewUrl else { return }
+                let detailModel = DetailViewModel(
+                    title: item.trackName ?? item.collectionName ?? "Name N/F",
+                    authorName: item.artistName,
+                    contentType: item.wrapperType,
+                    trackViewUrl: trackViewUrl,
+                    description: item.longDescription ?? "Description N/F",
+                    artictLinkUrl: NetworkConstants.baseLookupURl + String(item.artistId),
+                    contentImage: image
+                )
+                detailModels.append(detailModel)
             }
             
             dispatchGroup.notify(queue: .main) {
-                self.view?.configure(with: viewModels)
+                self.view?.configure(with: viewModels, with: detailModels)
             }
         }
     }

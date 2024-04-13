@@ -10,6 +10,7 @@ import UIKit
 final class MainViewController: UIViewController, UITableViewDelegate {
     private let output: MainViewOutput
     private var viewModel: [MainViewModel] = []
+    private var detailModel: [DetailViewModel] = []
     
     private let searchBar = UISearchBar()
     private let searchHistoryTable = UITableView()
@@ -39,10 +40,18 @@ final class MainViewController: UIViewController, UITableViewDelegate {
 private extension MainViewController {
     func setupUI(){
         view.backgroundColor = Constants.backgroundColorForMainView
-        
+
         setupSearchBar()
         setupSearchHistoryTable()
         setupCollectionView()
+        setupNavigationController()
+    }
+    
+    func setupNavigationController(){
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        backButton.tintColor = Constants.textColor
+        navigationItem.backBarButtonItem = backButton
     }
     
     func setupSearchBar() {
@@ -135,7 +144,9 @@ extension MainViewController: UICollectionViewDataSource{
 }
 
 extension MainViewController: UICollectionViewDelegate{
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        output.didTapOnCell(model: detailModel[indexPath.row])
+    }
 }
 
 // MARK: SearchBar
@@ -180,8 +191,9 @@ extension MainViewController: UITableViewDataSource {
 
 // MARK: ViewInput
 extension MainViewController: MainViewInput {
-    func configure(with model: [MainViewModel]) {
+    func configure(with model: [MainViewModel], with detailModel: [DetailViewModel]) {
         self.viewModel = model
+        self.detailModel = detailModel
         searchHistoryTable.isHidden = true
         collectionView.reloadData()
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? [String]()

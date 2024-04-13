@@ -13,16 +13,17 @@ final class MainRouter {
 }
 
 extension MainRouter: MainRouterInput {
+    func openDetailModule(with model: DetailViewModel) {
+        let detailVC = DetailViewController(detailModel: model)
+        viewController?.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     func openErrorAlert(with failure: String) {
         let alert = UIAlertController(title: nil, message: failure, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         DispatchQueue.main.async {
             self.viewController?.present(alert, animated: true, completion: nil)
         }
-    }
-    
-    func openDetailModule() {
-        print(#function)
     }
     
 }

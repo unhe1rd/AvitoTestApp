@@ -13,10 +13,11 @@ protocol MainViewOutput: AnyObject {
     func didChangeSearchText(searchText: String)
     func didSearchBarBookmarkButtonClicked(isUsingDefaultLimit: Bool)
     func didLoadView()
+    func didTapOnCell(model: DetailViewModel)
 }
 
 protocol MainViewInput: AnyObject {
-    func configure(with model: [MainViewModel])
+    func configure(with model: [MainViewModel], with detailModel: [DetailViewModel])
 }
 
 protocol MainInteractorInput: AnyObject {
@@ -28,7 +29,7 @@ protocol MainInteractorOutput: AnyObject {
 }
 
 protocol MainRouterInput: AnyObject {
-    func openDetailModule()
+    func openDetailModule(with model: DetailViewModel)
     func openErrorAlert(with failure: String)
 }
 
