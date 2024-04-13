@@ -22,6 +22,19 @@ final class MainPresenter {
 }
 
 extension MainPresenter: MainViewOutput {
+    func didLoadView() {
+        UserDefaults.standard.set(30, forKey: "limit")
+    }
+    
+    func didSearchBarBookmarkButtonClicked(isUsingDefaultLimit: Bool) {
+        if isUsingDefaultLimit == true {
+            UserDefaults.standard.set(30, forKey: "limit")
+        } else {
+            UserDefaults.standard.set(200, forKey: "limit")
+        }
+    }
+    
+    
     func didChangeSearchText(searchText: String) {
         searchDebounser?.reset()
         searchDebounser = Debouncer(delay: 0.8) {
@@ -34,40 +47,10 @@ extension MainPresenter: MainViewOutput {
     func showError(with failure: String) {
         router.openErrorAlert(with: failure)
     }
+    
 }
 
 private extension MainPresenter {
-    func didLoadData(with response: iTunesResponse) {
-        var viewModels: [MainViewModel] = []
-        
-        let dispatchGroup = DispatchGroup()
-
-        for cellModel in response.results {
-            dispatchGroup.enter()
-
-            SearchNetworkManager.shared.downloadImage(from: cellModel.artworkUrl100) { result in
-                defer {
-                    dispatchGroup.leave()
-                }
-
-                guard let image = result else {
-                    return
-                }
-
-                let viewModel = MainViewModel(
-                    title: cellModel.trackName ?? "123",
-                    contentType: cellModel.wrapperType,
-                    contentImage: image
-                )
-                viewModels.append(viewModel)
-            }
-        }
-
-        dispatchGroup.notify(queue: .main) {
-            self.view?.configure(with: viewModels)
-        }
-    }
-    
     func addSearchQueryToHistory(query: String) {
         var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? [String]()
         if query != ""{
@@ -79,8 +62,39 @@ private extension MainPresenter {
             print("[DEBUG] add to history \(query)")
         }
     }
+    
+    func didLoadData(with response: iTunesResponse) {
+        var viewModels: [MainViewModel] = []
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for cellModel in response.results {
+            dispatchGroup.enter()
+            
+            SearchNetworkManager.shared.downloadImage(from: cellModel.artworkUrl100) { result in
+                defer {
+                    dispatchGroup.leave()
+                }
+                
+                guard let image = result else {
+                    return
+                }
+                
+                let viewModel = MainViewModel(
+                    title: cellModel.trackName ?? cellModel.collectionName ?? "Name N/F",
+                    contentType: cellModel.wrapperType,
+                    contentImage: image
+                )
+                viewModels.append(viewModel)
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                self.view?.configure(with: viewModels)
+            }
+        }
+    }
 }
-
+    
 extension MainPresenter: MainInteractorOutput{
     func didRecieve(result: Result<iTunesResponse, Error>) {
         DispatchQueue.global().async {
@@ -97,3 +111,4 @@ extension MainPresenter: MainInteractorOutput{
         }
     }
 }
+

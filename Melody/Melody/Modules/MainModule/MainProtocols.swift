@@ -11,6 +11,8 @@ import UIKit
 
 protocol MainViewOutput: AnyObject {
     func didChangeSearchText(searchText: String)
+    func didSearchBarBookmarkButtonClicked(isUsingDefaultLimit: Bool)
+    func didLoadView()
 }
 
 protocol MainViewInput: AnyObject {

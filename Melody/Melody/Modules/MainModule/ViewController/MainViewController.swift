@@ -32,6 +32,7 @@ final class MainViewController: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         
         setupUI()
+        output.didLoadView()
     }
 }
 
@@ -50,7 +51,7 @@ private extension MainViewController {
         searchBar.delegate = self
         searchBar.placeholder = "Search your Melody..."
         searchBar.showsBookmarkButton = true
-        searchBar.setImage(UIImage(systemName: "clock.fill"), for: .bookmark, state: .normal)
+        searchBar.setImage(UIImage(systemName: "30.square"), for: .bookmark, state: .normal)
         
         searchBar.barTintColor = Constants.searchBarTintColor
         searchBar.tintColor = Constants.searchBarTintColor
@@ -143,7 +144,7 @@ extension MainViewController: UISearchBarDelegate{
         output.didChangeSearchText(searchText: searchText)
         
         searchHistory = searchHistory.filter {
-            $0.lowercased().hasPrefix(searchText.lowercased())
+            $0.localizedCaseInsensitiveContains(searchText.lowercased())
         }
         if searchText != ""{
             searchHistoryTable.isHidden = false
@@ -152,7 +153,10 @@ extension MainViewController: UISearchBarDelegate{
     }
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        print(#function)
+        let isUsingDefaultIcon = searchBar.image(for: .bookmark, state: .normal) == UIImage(systemName: "30.square")
+        let newIcon = isUsingDefaultIcon ? UIImage(systemName: "a.square.fill") : UIImage(systemName: "30.square")
+        searchBar.setImage(newIcon, for: .bookmark, state: .normal)
+        output.didSearchBarBookmarkButtonClicked(isUsingDefaultLimit: !isUsingDefaultIcon)
     }
 }
 

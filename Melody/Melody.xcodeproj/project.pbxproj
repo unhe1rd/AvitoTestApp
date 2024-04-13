@@ -170,6 +170,7 @@
 		B48BAA6D2BC7CBDD00F373BB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				B48BAA922BCB2FC000F373BB /* DetailModule */,
 				B48BAA6E2BC7CBEC00F373BB /* MainModule */,
 			);
 			path = Modules;
@@ -254,6 +255,13 @@
 				B48BAA8C2BCA964C00F373BB /* MainCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		B48BAA922BCB2FC000F373BB /* DetailModule */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DetailModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

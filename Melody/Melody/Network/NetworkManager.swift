@@ -26,8 +26,9 @@ final class SearchNetworkManager: SearchManagerDescription {
     let baseURL = NetworkConstants.baseURl
     
     func loadData(searchText: String, completion: @escaping (Result<iTunesResponse, Error>) -> Void) {
+        let userLimit = UserDefaults.standard.object(forKey: "limit") ?? 30
         
-        guard let url = URL(string: baseURL + "term=\(searchText)&limit=30") else {
+        guard let url = URL(string: baseURL + "entity=musicTrack,audiobook&term=\(searchText)&limit=\(userLimit)") else {
             completion(.failure(NetworkError.invalidURL))
             return
         }

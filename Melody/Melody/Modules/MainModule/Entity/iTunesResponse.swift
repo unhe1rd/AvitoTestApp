@@ -19,4 +19,5 @@ struct iTunesItem: Decodable {
     let wrapperType: String
     let trackViewUrl: String?
     let longDescription: String?
+    let collectionName: String?
 }
