@@ -45,6 +45,8 @@ extension MainPresenter: MainViewOutput {
     func didChangeSearchText(searchText: String) {
         searchDebounser?.reset()
         searchDebounser = Debouncer(delay: 0.8) {
+            self.detailModels = []
+            self.viewModels = []
             self.interactor.loadData(searchText: searchText)
             self.addSearchQueryToHistory(query: searchText)
         }
@@ -71,48 +73,15 @@ private extension MainPresenter {
     }
     
     func didLoadData(with response: iTunesResponse) {
-        let dispatchGroup = DispatchGroup()
-        
-        for item in response.results {
-            dispatchGroup.enter()
-            
-            SearchNetworkManager.shared.downloadImage(from: item.artworkUrl100) { result in
-                defer {
-                    dispatchGroup.leave()
-                }
-                
-                guard let image = result else {
-                    return
-                }
-                
-                let viewModel = MainViewModel(
-                    title: item.trackName ?? item.collectionName ?? "Name N/F",
-                    contentType: item.wrapperType,
-                    contentImage: image
-                )
-                self.viewModels.append(viewModel)
-                
-                guard let trackViewUrl = item.trackViewUrl else { return }
-                let detailModel = DetailViewModel(
-                    title: item.trackName ?? item.collectionName ?? "Name N/F",
-                    authorName: item.artistName,
-                    contentType: item.wrapperType,
-                    trackViewUrl: trackViewUrl,
-                    description: item.longDescription ?? "Description N/F",
-                    artictLinkUrl: NetworkConstants.baseLookupURl + String(item.artistId),
-                    contentImage: image
-                )
-                self.detailModels.append(detailModel)
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                self.view?.configure(with: self.viewModels, with: self.detailModels)
-            }
-        }
+        interactor.loadImages(response: response)
     }
 }
     
 extension MainPresenter: MainInteractorOutput{
+    func didFinish(){
+        self.view?.configure(with: self.viewModels, with: self.detailModels)
+    }
+    
     func didRecieve(result: Result<iTunesResponse, Error>) {
         DispatchQueue.global().async {
             switch result {
@@ -121,9 +90,7 @@ extension MainPresenter: MainInteractorOutput{
                 print(success.resultCount)
             case .failure(let failure):
                 print(failure)
-                DispatchQueue.main.async {
-                    self.showError(with: failure.localizedDescription)
-                }
+                self.showError(with: failure.localizedDescription)
             }
         }
     }

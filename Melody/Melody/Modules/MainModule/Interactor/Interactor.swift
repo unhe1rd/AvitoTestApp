@@ -12,6 +12,47 @@ final class MainInteractor {
 }
 
 extension MainInteractor: MainInteractorInput {
+    func loadImages(response: iTunesResponse) {
+        let dispatchGroup = DispatchGroup()
+        
+        for item in response.results {
+            dispatchGroup.enter()
+            
+            SearchNetworkManager.shared.downloadImage(from: item.artworkUrl100) { result in
+                defer {
+                    dispatchGroup.leave()
+                }
+                
+                guard let image = result else {
+                    return
+                }
+                
+                let viewModel = MainViewModel(
+                    title: item.trackName ?? item.collectionName ?? "Name N/F",
+                    contentType: item.wrapperType,
+                    contentImage: image
+                )
+                self.output?.viewModels.append(viewModel)
+                
+                guard let trackViewUrl = item.trackViewUrl else { return }
+                let detailModel = DetailViewModel(
+                    title: item.trackName ?? item.collectionName ?? "Name N/F",
+                    authorName: item.artistName,
+                    contentType: item.wrapperType,
+                    trackViewUrl: trackViewUrl,
+                    description: item.longDescription ?? "Description N/F",
+                    artictLinkUrl: NetworkConstants.baseLookupURl + String(item.artistId),
+                    contentImage: image
+                )
+                self.output?.detailModels.append(detailModel)
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                self.output?.didFinish()
+            }
+        }
+    }
+    
     func loadData(searchText: String) {
         SearchNetworkManager.shared.loadData(searchText: searchText){ result in
             switch result {

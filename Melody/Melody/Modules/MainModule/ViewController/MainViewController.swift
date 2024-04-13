@@ -19,6 +19,7 @@ final class MainViewController: UIViewController, UITableViewDelegate {
         let layout = UICollectionViewFlowLayout()
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
+    private var isFirstSearch: Bool = true
     
     init(output: MainViewOutput) {
         self.output = output
@@ -157,9 +158,10 @@ extension MainViewController: UISearchBarDelegate{
         searchHistory = searchHistory.filter {
             $0.localizedCaseInsensitiveContains(searchText.lowercased())
         }
-        if searchText != ""{
+        if isFirstSearch == true {
             searchHistoryTable.isHidden = false
         }
+        isFirstSearch = false
         searchHistoryTable.reloadData()
     }
     
