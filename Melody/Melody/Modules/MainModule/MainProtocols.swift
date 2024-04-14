@@ -22,7 +22,7 @@ protocol MainViewInput: AnyObject {
 
 protocol MainInteractorInput: AnyObject {
     func loadData(searchText: String)
-    func loadImages(response: iTunesResponse)
+    func loadModels(response: iTunesResponse)
 }
 
 protocol MainInteractorOutput: AnyObject {

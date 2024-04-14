@@ -12,7 +12,7 @@ final class MainInteractor {
 }
 
 extension MainInteractor: MainInteractorInput {
-    func loadImages(response: iTunesResponse) {
+    func loadModels(response: iTunesResponse) {
         let dispatchGroup = DispatchGroup()
         
         for item in response.results {

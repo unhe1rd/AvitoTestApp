@@ -68,12 +68,11 @@ private extension MainPresenter {
                 searchHistory = Array(searchHistory.prefix(5))
             }
             UserDefaults.standard.set(searchHistory, forKey: "searchHistory")
-            print("[DEBUG] add to history \(query)")
         }
     }
     
     func didLoadData(with response: iTunesResponse) {
-        interactor.loadImages(response: response)
+        interactor.loadModels(response: response)
     }
 }
     
@@ -87,9 +86,7 @@ extension MainPresenter: MainInteractorOutput{
             switch result {
             case .success(let success):
                 self.didLoadData(with: success)
-                print(success.resultCount)
             case .failure(let failure):
-                print(failure)
                 self.showError(with: failure.localizedDescription)
             }
         }

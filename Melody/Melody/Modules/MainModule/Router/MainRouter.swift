@@ -14,8 +14,11 @@ final class MainRouter {
 
 extension MainRouter: MainRouterInput {
     func openDetailModule(with model: DetailViewModel) {
-        let detailVC = DetailViewController(detailModel: model)
-        viewController?.navigationController?.pushViewController(detailVC, animated: true)
+        let detailVC = DetailContainer.assemble(with: .init())
+        if let detailModuleInput = detailVC.viewController as? DetailModuleInput {
+            detailModuleInput.configure(with: model)
+        }
+        viewController?.navigationController?.pushViewController(detailVC.viewController, animated: true)
     }
     
     func openErrorAlert(with failure: String) {
@@ -25,5 +28,4 @@ extension MainRouter: MainRouterInput {
             self.viewController?.present(alert, animated: true, completion: nil)
         }
     }
-    
 }
