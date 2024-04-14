@@ -56,9 +56,9 @@ extension MainInteractor: MainInteractorInput {
         SearchNetworkManager.shared.loadData(searchText: searchText){ result in
             switch result {
             case .success(let success):
-                self.output?.didRecieve(result: .success(success))
+                self.output?.didRecieve(searchText: searchText, result: .success(success))
             case .failure(let failure):
-                self.output?.didRecieve(result: .failure(failure))
+                self.output?.didRecieve(searchText: searchText, result: .failure(failure))
             }
         }
     }

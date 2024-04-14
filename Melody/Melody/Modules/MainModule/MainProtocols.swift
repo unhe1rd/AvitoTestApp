@@ -18,6 +18,8 @@ protocol MainViewOutput: AnyObject {
 
 protocol MainViewInput: AnyObject {
     func configure(with model: [MainViewModel], with detailModel: [DetailViewModel])
+    func stopLoader()
+    func startLoader()
 }
 
 protocol MainInteractorInput: AnyObject {
@@ -26,7 +28,7 @@ protocol MainInteractorInput: AnyObject {
 }
 
 protocol MainInteractorOutput: AnyObject {
-    func didRecieve(result: Result<iTunesResponse, Error>)
+    func didRecieve(searchText: String, result: Result<iTunesResponse, Error>)
     func didFinish()
     var viewModels: [MainViewModel] { get set }
     var detailModels: [DetailViewModel] { get set }

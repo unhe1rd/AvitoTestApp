@@ -45,6 +45,7 @@ extension MainPresenter: MainViewOutput {
     func didChangeSearchText(searchText: String) {
         searchDebounser?.reset()
         searchDebounser = Debouncer(delay: 0.8) {
+            self.view?.startLoader()
             self.detailModels = []
             self.viewModels = []
             self.interactor.loadData(searchText: searchText)
@@ -77,19 +78,28 @@ private extension MainPresenter {
 }
     
 extension MainPresenter: MainInteractorOutput{
-    func didFinish(){
-        self.view?.configure(with: self.viewModels, with: self.detailModels)
-    }
-    
-    func didRecieve(result: Result<iTunesResponse, Error>) {
+    func didRecieve(searchText: String, result: Result<iTunesResponse, Error>) {
         DispatchQueue.global().async {
             switch result {
             case .success(let success):
                 self.didLoadData(with: success)
+                DispatchQueue.main.async {
+                    self.view?.stopLoader()
+                }
+                if success.resultCount == 0 && searchText != ""{
+                    self.showError(with: "Ваш запрос не найден, повторите попытку снова")
+                }
             case .failure(let failure):
                 self.showError(with: failure.localizedDescription)
+                DispatchQueue.main.async {
+                    self.view?.stopLoader()
+                }
             }
         }
+    }
+    
+    func didFinish(){
+        self.view?.configure(with: self.viewModels, with: self.detailModels)
     }
 }
 

@@ -11,7 +11,7 @@ final class MainViewController: UIViewController, UITableViewDelegate {
     private let output: MainViewOutput
     private var viewModel: [MainViewModel] = []
     private var detailModel: [DetailViewModel] = []
-    
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     private let searchBar = UISearchBar()
     private let searchHistoryTable = UITableView()
     private var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? [String]()
@@ -41,11 +41,20 @@ final class MainViewController: UIViewController, UITableViewDelegate {
 private extension MainViewController {
     func setupUI(){
         view.backgroundColor = Constants.backgroundColorForMainView
-
+        
+        setupActivityIndicatorView()
+        
         setupSearchBar()
         setupSearchHistoryTable()
         setupCollectionView()
         setupNavigationController()
+    }
+    
+    func setupActivityIndicatorView(){
+        activityIndicator.color = .white
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
+        view.bringSubviewToFront(activityIndicator)
     }
     
     func setupNavigationController(){
@@ -154,7 +163,6 @@ extension MainViewController: UICollectionViewDelegate{
 extension MainViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         output.didChangeSearchText(searchText: searchText)
-        
         searchHistory = searchHistory.filter {
             $0.localizedCaseInsensitiveContains(searchText.lowercased())
         }
@@ -197,11 +205,20 @@ extension MainViewController: UITableViewDataSource {
 
 // MARK: ViewInput
 extension MainViewController: MainViewInput {
+    func startLoader() {
+        activityIndicator.startAnimating()
+    }
+    
+    func stopLoader() {
+        activityIndicator.stopAnimating()
+    }
+    
     func configure(with model: [MainViewModel], with detailModel: [DetailViewModel]) {
         self.viewModel = model
         self.detailModel = detailModel
         searchHistoryTable.isHidden = true
         collectionView.reloadData()
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? [String]()
+        activityIndicator.stopAnimating()
     }
 }
