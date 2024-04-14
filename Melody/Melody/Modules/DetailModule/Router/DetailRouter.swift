@@ -10,7 +10,11 @@ import UIKit
 
 final class DetailRouter {
     weak var viewController: DetailViewController?
+    private let deeplinkManager = DeeplinkManager.shared
 }
 
 extension DetailRouter: DetailRouterInput {
+    func openTrackView(urlStringToOpen: String) {
+        deeplinkManager.open(urlString: urlStringToOpen)
+    }
 }

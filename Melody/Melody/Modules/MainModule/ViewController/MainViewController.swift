@@ -158,6 +158,10 @@ extension MainViewController: UISearchBarDelegate{
         searchHistory = searchHistory.filter {
             $0.localizedCaseInsensitiveContains(searchText.lowercased())
         }
+        if searchHistory == [] {
+            searchHistoryTable.isHidden = true
+            isFirstSearch = false
+        }
         if isFirstSearch == true {
             searchHistoryTable.isHidden = false
         }

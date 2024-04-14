@@ -34,13 +34,12 @@ extension MainInteractor: MainInteractorInput {
                 )
                 self.output?.viewModels.append(viewModel)
                 
-                guard let trackViewUrl = item.trackViewUrl else { return }
                 let detailModel = DetailViewModel(
-                    title: item.trackName ?? item.collectionName ?? "Name N/F",
-                    authorName: item.artistName,
-                    contentType: item.wrapperType,
-                    trackViewUrl: trackViewUrl,
-                    description: item.longDescription ?? "Description N/F",
+                    title: "Name: " + (item.trackName ?? item.collectionName ?? "Name N/F"),
+                    authorName: "Author: " + (item.artistName),
+                    contentType: "Type: " + (item.wrapperType),
+                    trackViewUrl: item.trackViewUrl ?? item.collectionViewUrl ?? "",
+                    description: "Description: " + (item.description ?? item.longDescription ?? item.shortDescription ?? "Description N/F"),
                     artictLinkUrl: NetworkConstants.baseLookupURl + String(item.artistId),
                     contentImage: image
                 )

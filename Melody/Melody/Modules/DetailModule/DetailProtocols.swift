@@ -18,6 +18,7 @@ protocol DetailViewInput: AnyObject {
 }
 
 protocol DetailViewOutput: AnyObject {
+    func didPressTrackViewButton(trackViewUrl: String)
 }
 
 protocol DetailInteractorInput: AnyObject {
@@ -27,4 +28,5 @@ protocol DetailInteractorOutput: AnyObject {
 }
 
 protocol DetailRouterInput: AnyObject {
+    func openTrackView(urlStringToOpen: String)
 }

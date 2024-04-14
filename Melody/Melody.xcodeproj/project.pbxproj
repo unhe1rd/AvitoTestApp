@@ -34,6 +34,8 @@
 		B48BAAA12BCBD41800F373BB /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA02BCBD41800F373BB /* DetailInteractor.swift */; };
 		B48BAAA52BCBD45800F373BB /* DetailAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA42BCBD45800F373BB /* DetailAssembly.swift */; };
 		B48BAAA72BCBD50400F373BB /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA62BCBD50400F373BB /* DetailRouter.swift */; };
+		B48BAAA92BCC1B1800F373BB /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA82BCC1B1800F373BB /* DeeplinkManager.swift */; };
+		B48BAAAC2BCC252D00F373BB /* TextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAAB2BCC252D00F373BB /* TextManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,8 @@
 		B48BAAA02BCBD41800F373BB /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
 		B48BAAA42BCBD45800F373BB /* DetailAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAssembly.swift; sourceTree = "<group>"; };
 		B48BAAA62BCBD50400F373BB /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
+		B48BAAA82BCC1B1800F373BB /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
+		B48BAAAB2BCC252D00F373BB /* TextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,9 +177,9 @@
 		B48BAA6C2BC7CBC800F373BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B48BAAAA2BCC251B00F373BB /* Managers */,
 				B48BAA692BC7CB6D00F373BB /* LaunchScreen.storyboard */,
 				B48BAA422BC7C8B300F373BB /* Assets.xcassets */,
-				B48BAA812BC7D96C00F373BB /* Debouncer.swift */,
 				B48BAA8E2BCADF8600F373BB /* Constants.swift */,
 			);
 			path = "Supporting Files";
@@ -333,6 +337,16 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		B48BAAAA2BCC251B00F373BB /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B48BAAA82BCC1B1800F373BB /* DeeplinkManager.swift */,
+				B48BAA812BC7D96C00F373BB /* Debouncer.swift */,
+				B48BAAAB2BCC252D00F373BB /* TextManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -469,6 +483,7 @@
 				B48BAAA12BCBD41800F373BB /* DetailInteractor.swift in Sources */,
 				B48BAA772BC7D28A00F373BB /* MainAssembly.swift in Sources */,
 				B48BAA862BC7EFC400F373BB /* Presenter.swift in Sources */,
+				B48BAAA92BCC1B1800F373BB /* DeeplinkManager.swift in Sources */,
 				B48BAA842BC7EFAE00F373BB /* Interactor.swift in Sources */,
 				B48BAA752BC7D27300F373BB /* MainProtocols.swift in Sources */,
 				B48BAA8F2BCADF8600F373BB /* Constants.swift in Sources */,
@@ -482,6 +497,7 @@
 				B48BAA7B2BC7D45B00F373BB /* iTunesResponse.swift in Sources */,
 				B48BAA3A2BC7C8B100F373BB /* AppDelegate.swift in Sources */,
 				B48BAA3C2BC7C8B100F373BB /* SceneDelegate.swift in Sources */,
+				B48BAAAC2BCC252D00F373BB /* TextManager.swift in Sources */,
 				B48BAA792BC7D3A900F373BB /* MainRouter.swift in Sources */,
 				B48BAAA52BCBD45800F373BB /* DetailAssembly.swift in Sources */,
 				B48BAA952BCB348A00F373BB /* DetailViewModel.swift in Sources */,

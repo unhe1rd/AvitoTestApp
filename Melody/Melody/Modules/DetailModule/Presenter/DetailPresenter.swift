@@ -21,6 +21,9 @@ final class DetailPresenter {
 }
 
 extension DetailPresenter: DetailViewOutput {
+    func didPressTrackViewButton(trackViewUrl: String) {
+        router.openTrackView(urlStringToOpen: trackViewUrl)
+    }
 }
 
 extension DetailPresenter: DetailInteractorOutput {

@@ -62,8 +62,8 @@ private extension MainCell {
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentTypeLabel.bottomAnchor, constant: 4),
-            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
     }
     
@@ -74,9 +74,9 @@ private extension MainCell {
         contentTypeLabel.textAlignment = .center
         
         NSLayoutConstraint.activate([
-            contentTypeLabel.topAnchor.constraint(equalTo: contentImageView.bottomAnchor),
-            contentTypeLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            contentTypeLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+            contentTypeLabel.topAnchor.constraint(equalTo: contentImageView.bottomAnchor, constant: 8),
+            contentTypeLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            contentTypeLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
     }
 }
