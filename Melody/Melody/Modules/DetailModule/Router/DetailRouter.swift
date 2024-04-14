@@ -14,7 +14,19 @@ final class DetailRouter {
 }
 
 extension DetailRouter: DetailRouterInput {
+    func openAuthorView(urlStringToOpen: String) {
+        deeplinkManager.open(urlString: urlStringToOpen)
+    }
+    
     func openTrackView(urlStringToOpen: String) {
         deeplinkManager.open(urlString: urlStringToOpen)
+    }
+    
+    func openErrorAlert(with failure: String) {
+        let alert = UIAlertController(title: nil, message: failure, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.viewController?.present(alert, animated: true, completion: nil)
+        }
     }
 }

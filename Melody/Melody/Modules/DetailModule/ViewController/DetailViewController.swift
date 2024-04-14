@@ -16,8 +16,10 @@ final class DetailViewController: UIViewController {
     private let authorNameLabel = UILabel()
     private let trackViewButton = UIButton()
     private let descriptionLabel = UILabel()
+    private let lookupButton = UIButton()
     
     private var trackViewUrl: String?
+    private var lookupUrl: String?
     
     init(output: DetailViewOutput) {
         self.output = output
@@ -47,6 +49,7 @@ private extension DetailViewController{
         setupTitleLabel()
         setupAuthorNameLabel()
         setupDescriptionLabel()
+        setupLookupButton()
     }
     
     func setupDetailImageView(){
@@ -119,7 +122,7 @@ private extension DetailViewController{
             descriptionLabel.bottomAnchor.constraint(equalTo: trackViewButton.topAnchor, constant: -8)
         ])
     }
-
+    //MARK: TrackViewButton
     func setupTrackViewButton(){
         view.addSubview(trackViewButton)
         trackViewButton.translatesAutoresizingMaskIntoConstraints = false
@@ -136,10 +139,10 @@ private extension DetailViewController{
         }
         
         let buttonHeight:CGFloat = 32
-        let buttonWidth:CGFloat = view.frame.width / 2
+        let buttonWidth:CGFloat = (view.frame.width / 2) - 16
         NSLayoutConstraint.activate([
          trackViewButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            trackViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+            trackViewButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             trackViewButton.heightAnchor.constraint(equalToConstant: buttonHeight),
             trackViewButton.widthAnchor.constraint(equalToConstant: buttonWidth)
         ])
@@ -150,6 +153,39 @@ private extension DetailViewController{
             return
         }
         output.didPressTrackViewButton(trackViewUrl: url)
+    }
+    
+    //MARK: LookupButton
+    func setupLookupButton(){
+        view.addSubview(lookupButton)
+        lookupButton.translatesAutoresizingMaskIntoConstraints = false
+        lookupButton.addTarget(self, action: #selector(didPressLookupButton), for: .touchUpInside)
+        if let originalImage = UIImage(systemName: "person.crop.circle") {
+            let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 16)
+            let symbolImage = originalImage.withConfiguration(symbolConfiguration)
+            lookupButton.setImage(symbolImage, for: .normal)
+            lookupButton.tintColor = UIColor.white
+            lookupButton.setTitle(" Author", for: .normal)
+            lookupButton.setTitleColor(UIColor.white, for: .normal)
+            lookupButton.layer.cornerRadius = 16
+            lookupButton.backgroundColor = UIColor.black
+        }
+        
+        let buttonHeight:CGFloat = 32
+        let buttonWidth:CGFloat = (view.frame.width / 2) - 16
+        NSLayoutConstraint.activate([
+            lookupButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            lookupButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            lookupButton.heightAnchor.constraint(equalToConstant: buttonHeight),
+            lookupButton.widthAnchor.constraint(equalToConstant: buttonWidth)
+        ])
+    }
+    
+    @objc func didPressLookupButton(){
+        guard let url = lookupUrl else {
+            return
+        }
+        output.didPressLookupButton(url: url)
     }
 }
 
@@ -163,6 +199,13 @@ extension DetailViewController: DetailModuleInput {
         contentTypeLabel.text = detailViewModel.contentType
         authorNameLabel.text = detailViewModel.authorName
         trackViewUrl = detailViewModel.trackViewUrl
+        lookupUrl = detailViewModel.artictLinkUrl
+        
+        if TextManager
+            .convertHtmlToPlainText(detailViewModel.description)
+            == "Description: Description N/F" {
+            descriptionLabel.isHidden = true
+        }
         descriptionLabel.text = TextManager.convertHtmlToPlainText(detailViewModel.description)
     }
 }

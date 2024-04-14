@@ -10,6 +10,7 @@ import UIKit
 
 protocol SearchManagerDescription {
     func loadData(searchText: String, completion: @escaping (Result<iTunesResponse, Error>) -> Void)
+    func loadAuthorUrl(urlString: String, completion: @escaping (Result<authorResponse, Error>) -> Void)
     func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void)
 }
 
@@ -20,10 +21,42 @@ enum NetworkError: Error {
 
 final class SearchNetworkManager: SearchManagerDescription {
     
+    
+    
     static let shared: SearchManagerDescription = SearchNetworkManager()
     private init() {}
     
     let baseURL = NetworkConstants.baseURl
+    
+    func loadAuthorUrl(urlString: String, completion: @escaping (Result<authorResponse, Error>) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        print(url)
+
+        let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data else {
+                completion(.failure(NetworkError.noData))
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            do {
+                let response = try decoder.decode(authorResponse.self, from: data)
+                completion(.success(response))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        dataTask.resume()
+    }
     
     func loadData(searchText: String, completion: @escaping (Result<iTunesResponse, Error>) -> Void) {
         let userLimit = UserDefaults.standard.object(forKey: "limit") ?? 30

@@ -36,6 +36,7 @@
 		B48BAAA72BCBD50400F373BB /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA62BCBD50400F373BB /* DetailRouter.swift */; };
 		B48BAAA92BCC1B1800F373BB /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAA82BCC1B1800F373BB /* DeeplinkManager.swift */; };
 		B48BAAAC2BCC252D00F373BB /* TextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAAB2BCC252D00F373BB /* TextManager.swift */; };
+		B48BAAAE2BCC608900F373BB /* authorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48BAAAD2BCC608900F373BB /* authorResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		B48BAAA62BCBD50400F373BB /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
 		B48BAAA82BCC1B1800F373BB /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
 		B48BAAAB2BCC252D00F373BB /* TextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextManager.swift; sourceTree = "<group>"; };
+		B48BAAAD2BCC608900F373BB /* authorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authorResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +327,7 @@
 		B48BAAA22BCBD43800F373BB /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				B48BAAAD2BCC608900F373BB /* authorResponse.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 				B48BAA772BC7D28A00F373BB /* MainAssembly.swift in Sources */,
 				B48BAA862BC7EFC400F373BB /* Presenter.swift in Sources */,
 				B48BAAA92BCC1B1800F373BB /* DeeplinkManager.swift in Sources */,
+				B48BAAAE2BCC608900F373BB /* authorResponse.swift in Sources */,
 				B48BAA842BC7EFAE00F373BB /* Interactor.swift in Sources */,
 				B48BAA752BC7D27300F373BB /* MainProtocols.swift in Sources */,
 				B48BAA8F2BCADF8600F373BB /* Constants.swift in Sources */,

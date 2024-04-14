@@ -21,12 +21,35 @@ final class DetailPresenter {
 }
 
 extension DetailPresenter: DetailViewOutput {
+    func didPressLookupButton(url authorUrl: String) {
+        self.interactor.loadAuthorUrl(url: authorUrl)
+    }
+    
     func didPressTrackViewButton(trackViewUrl: String) {
         router.openTrackView(urlStringToOpen: trackViewUrl)
+    }
+    
+    func didLoadData(with response: authorResponse){
+        router.openAuthorView(urlStringToOpen: response.results[0].artistLinkUrl)
+    }
+    
+    func showError(with failure: String) {
+        router.openErrorAlert(with: failure)
     }
 }
 
 extension DetailPresenter: DetailInteractorOutput {
+    func didRecieveAuthor(result: Result<authorResponse, Error>) {
+        DispatchQueue.global().async {
+            switch result {
+            case .success(let success):
+                self.didLoadData(with: success)
+            case .failure(let failure):
+                self.showError(with: failure.localizedDescription)
+            }
+        }
+    }
+    
 }
 
 extension DetailPresenter: DetailModuleInput {
